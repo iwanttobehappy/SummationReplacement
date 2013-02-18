@@ -19,6 +19,9 @@ filename=result.filename
 #load up a csv in the following format CASE_NUMBER BODY_SITE PHYSICIAN_NAME REQUISITION_NUMBER DATE_RECEIVED DATE_REPORTED
 db = sqlite3.connect(':memory:')
 
+
+
+
 def init_db(cursor):
 	cursor.execute('''CREATE TABLE cases(
 			CaseNumber varchar,
@@ -52,7 +55,13 @@ for i in c.fetchall():
 for i in cgiNumbers:
 	sel="Select CaseNumber,dateReported from cases where reqNumber='%s'" % i
 	c.execute(sel)
+	readyCases=list()
 	for cn in c.fetchall():
 		if cn[1]=="":
-			print cn[0],i
-
+			readyCases.append(cn[0])
+	if len(readyCases)==1:
+		if readyCases[0][0]=='X':
+			print readyCases[0],i
+			
+		
+		
