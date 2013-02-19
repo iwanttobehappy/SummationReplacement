@@ -23,10 +23,34 @@ def lookupPractice(cgiId):
 	global practice
 	for key in practice:
 		if key==cgiId:
-			return practice[key]
+			return simplifyPracticeName(practice[key])
 	return "No Practice Associated"
 		
-
+def simplifyPracticeName(e):
+	e=e.replace("NY Presbyterian Hosp. Weill Cornell Med. Ctr. MM Pgm.","Weill Cornell")
+	e=e.replace("Chilton Memorial Hospital","Chilton")
+	e=e.replace("Costa Rica","Roche")
+	e=e.replace("Trinidad","Roche")
+	e=e.replace("El Salvador","Roche")
+	e=e.replace("Aruba","Roche")
+	e=e.replace("Guatemala","Roche")
+	e=e.replace("Panama","Roche")
+	e=e.replace("Repbulic of Dominica","Roche")
+	e=e.replace("Curacao","Roche")
+	e=e.replace("Bahamas","Roche")
+	e=e.replace("Jamaica","Roche")
+	e=e.replace("Honduras","Roche")
+	e=e.replace("University of Iowa HealthcareClinical Pathology Lab","UIowa")
+	e=e.replace("Georgia Health Sciences University Medical Center","Georgia Health Sciences")
+	e=e.replace("Research Long Island Jewish Medical Ctr.","LIJ")
+	e=e.replace("Memorial Sloan-Kettering Cancer Center","MSKCC")
+	e=e.replace("Regional Cancer Care Associates","Regional Cancer Care")
+	e=e.replace("Weill Cornell Medical College","Weill Cornell")
+	e=e.replace("Health Network Laboratories","HNL")
+	e=e.replace("Republic Dominican","Roche")
+	e=e.replace("Republic of Dominica","Roche")
+	e=e.replace("Payson Pavilion","")
+	return e
 
 def init_db(cursor):
 	cursor.execute('''CREATE TABLE cases(
