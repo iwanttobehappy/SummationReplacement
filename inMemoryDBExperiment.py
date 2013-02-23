@@ -19,6 +19,23 @@ filename=result.filename
 #load up a csv in the following format CASE_NUMBER BODY_SITE PHYSICIAN_NAME REQUISITION_NUMBER DATE_RECEIVED DATE_REPORTED PRACTICE
 db = sqlite3.connect(':memory:')
 
+
+
+
+
+def makePendingDays(dt):
+	tmp=dt.split()
+	t2=tmp[0].split("/")
+	day=t2[1]
+	month=t2[0]
+	year=t2[2]
+	
+	dt=datetime.date(int(year),int(month),int(day))
+	today=date.today()
+	return abs((today-dt).days)
+
+
+
 def lookupPractice(cgiId):
 	global practice
 	for key in practice:
@@ -83,8 +100,9 @@ for i in c.fetchall():
 	
 #now I have a list of cgi numbers now let's get the cases
 practice=dict()
+receiveDate=dict()
 for i in cgiNumbers:
-	sel="Select CaseNumber,dateReported,practice from cases where reqNumber='%s'" % i
+	sel="Select CaseNumber,dateReported,practice,dateReceived from cases where reqNumber='%s'" % i
 	c.execute(sel)
 	readyCases=list()
 
@@ -92,9 +110,10 @@ for i in cgiNumbers:
 		if cn[1]=="":
 			readyCases.append(cn[0])
 			practice[i]=cn[2]
+			receiveDate[cn[0]]=cn[3]
 	if len(readyCases)==1:
 		if readyCases[0][0]=='X':
-			print readyCases[0],i,lookupPractice(i)
+			print readyCases[0],i,lookupPractice(i),makePendingDays(receiveDate[readyCases[0]])
 			
 		
 		
